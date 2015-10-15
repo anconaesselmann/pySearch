@@ -44,3 +44,8 @@ ehthumbs.db
 Thumbs.db
 
 _meta
+srcTest/FileMergerTestData
+srcTest/SearchEngineTestData
+srcTest/IndexerTestData
+srcTest/FileBlockTestData/
+srcTest/ParserTestData
