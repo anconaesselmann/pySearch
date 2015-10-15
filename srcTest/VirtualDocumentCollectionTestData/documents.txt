@@ -1,0 +1,11 @@
+<DOC docName_1>
+This is text
+</DOC>
+
+<DOC docName_2>
+document 2 text
+</DOC>
+
+<DOC docName_3>
+document <DOC>3 text
+</DOC>

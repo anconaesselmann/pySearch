@@ -1,0 +1,6 @@
+search result for 'asus AND google':
+[1, 8]
+search result for 'screen AND bad':
+[3]
+search result for 'great AND tablet':
+[2, 3, 6]

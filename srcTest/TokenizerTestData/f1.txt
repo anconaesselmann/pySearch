@@ -1,0 +1,7 @@
+<DOC 1>
+This   1234 .,?/*&^%$#is_A_tEst.
+</DOC>
+
+<DOC 2>
+I really love my Nexus!
+</DOC>
