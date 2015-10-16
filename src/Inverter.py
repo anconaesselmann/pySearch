@@ -55,28 +55,22 @@ class Inverter():
             parts = line.split(',');
             index.insert(parts[0], parts[1], int(parts[2]));
             line  = mergedFH.readline();
+        index.reset();
+        count = 0;
         for term in index:
             termName      = term.term;
             termFrequency = term.count;
-            termDocs      = term.docs;
-            docNode       = termDocs.next;
             termString    = termName + ':' + str(termFrequency)
-            while docNode is not None:
-                docName           = docNode.value.doc;
-                docId             = str(self._generateDocId(docName));
-                documentFrequency = docNode.value.count;
+            for doc in term:
+                docId             = str(self._generateDocId(doc.doc));
+                documentFrequency = doc.count;
                 docString         =  '|' + docId + ':' + str(documentFrequency) + ';';
-                lineNode          = docNode.value.lines.next;
-                lineString        = '';
-                while lineNode is not None:
-                    line = lineNode.value;
+                lineString = '';
+                for line in doc:
                     if len(lineString) > 0: lineString += ',';
                     lineString += str(line.line);
-                    lineNode    = lineNode.next;
                 docString  += lineString;
                 termString += docString;
-                docNode = docNode.next;
-            # print termString;
             collapsedFH.write(termString + '\n');
         collapsedFH.close();
 

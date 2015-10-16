@@ -1,5 +1,5 @@
 """
-SearchEngine works with an inverted index produces by Indexer.
+SearchEngine works with an inverted index produced by Indexer.
 
 Two word and queries can be searched for.
 
@@ -24,8 +24,8 @@ class SearchEngine():
         terms   = query.split(' AND ');
         l1      = self._getPostingList(terms[0]);
         l2      = self._getPostingList(terms[1]);
-        p1      = l1.next;
-        p2      = l2.next;
+        p1      = l1._head;
+        p2      = l2._head;
         results = [];
         while (p1 is not None) and (p2 is not None):
             if p1.value == p2.value:
@@ -66,6 +66,6 @@ class SearchEngine():
         list        = LinkedList();
         for i in xrange(1, len(parts)):
             docParts = parts[i].split(':');
-            list.insert(self._documentIds[docParts[0]]);
+            list.insertAfter(self._documentIds[docParts[0]]);
         return list;
 

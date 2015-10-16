@@ -9,6 +9,10 @@ from src.FileSorter import FileSorter;
 from src.FileMerger import FileMerger
 from src.sorting.QuickSort import QuickSort;
 
+def file_get_contents(filename):
+    with open(filename) as f:
+        return f.read()
+
 class InverterTest(unittest.TestCase):
     def _getInverter(self):
         outputDir  = path.dirname(path.realpath(__file__)) + path.sep + 'InverterTestData' + path.sep;
@@ -22,7 +26,7 @@ class InverterTest(unittest.TestCase):
     def test_create(self):
         fileDir1    = path.dirname(path.realpath(__file__)) + path.sep + 'InverterTestData' + path.sep + '1.txt';
         fileHandler = io.open(fileDir1, 'wb');
-        fileHandler.write("muffler,doc_4,458\nnonadventitious,doc_1,155\nrook,doc_2,96\nunbloused,doc_3,347\nunbloused,doc_5,449\ncosmogony,doc_4,350\ndecimal,doc_5,410\nenterozoon,doc_3,4\ninteresting,doc_5,237\nintermatting,doc_2,397\nkinesiology,doc_3,257\nmuffler,doc_5,18\nnonadventitious,doc_4,238\nrook,doc_4,200\nunbloused,doc_5,287\ncosmogony,doc_3,336\ndecimal,doc_3,67\nenterozoon,doc_3,56\ninteresting,doc_3,496\nintermatting,doc_5,340\nkinesiology,doc_4,208\nmuffler,doc_4,457\nnonadventitious,doc_1,71\nrook,doc_2,15\nunbloused,doc_3,448\ncosmogony,doc_1,34\ndecimal,doc_3,151\nenterozoon,doc_3,9\nrook,doc_5,395\nunbloused,doc_5,117\ncosmogony,doc_5,140\ndecimal,doc_1,451\nenterozoon,doc_4,418\n");
+        fileHandler.write("muffler,doc_4,458\nnonadventitious,doc_1,155\nrook,doc_2,96\nunbloused,doc_3,347\nunbloused,doc_5,449\ncosmogony,doc_4,350\ndecimal,doc_5,410\nenterozoon,doc_3,4\ninteresting,doc_5,237\nintermatting,doc_2,397\nkinesiology,doc_3,257\nmuffler,doc_5,18\nnonadventitious,doc_4,238\nrook,doc_4,200\nunbloused,doc_5,287\ncosmogony,doc_3,336\ndecimal,doc_3,67\nenterozoon,doc_3,56\ninteresting,doc_3,496\nintermatting,doc_5,340\nkinesiology,doc_4,208\nmuffler,doc_4,457\nnonadventitious,doc_1,71\nrook,doc_2,15\nunbloused,doc_3,448\ncosmogony,doc_1,34\ncosmogony,doc_1,12\ndecimal,doc_3,151\nenterozoon,doc_3,9\nrook,doc_5,395\nunbloused,doc_5,117\ncosmogony,doc_5,140\ndecimal,doc_1,451\nenterozoon,doc_4,418\n");
         fileHandler.close();
 
         fileDir2    = path.dirname(path.realpath(__file__)) + path.sep + 'InverterTestData' + path.sep + '2.txt';
@@ -33,6 +37,10 @@ class InverterTest(unittest.TestCase):
         inputDirs = [ fileDir1, fileDir2 ];
         inverter  = self._getInverter();
         inverter.create(inputDirs);
+
+        collapsedDir = path.dirname(path.realpath(__file__)) + path.sep + 'InverterTestData' + path.sep + 'inverter_1_collapsed.txt';
+        content = file_get_contents(collapsedDir)
+        print(content);
 
 if __name__ == '__main__':
     unittest.main()

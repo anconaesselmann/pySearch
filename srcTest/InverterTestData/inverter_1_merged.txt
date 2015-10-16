@@ -1,5 +1,6 @@
 ajo,doc_3,390
 bootblack,doc_2,76
+cosmogony,doc_1,12
 cosmogony,doc_1,34
 cosmogony,doc_3,336
 cosmogony,doc_3,446

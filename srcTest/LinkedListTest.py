@@ -7,40 +7,72 @@ from src.LinkedList import LinkedList;
 from src.Testing import *
 
 class LinkedListTest(unittest.TestCase):
-    def dataProvider_insert(self):
+    def dataProvider_insertAfter(self):
         return [
             [ # data set 1
                 [8,3,8,6,1,4,5,9,2,8], None
             ],
         ]
 
-    @dataProvider(dataProvider_insert)
-    def test_insert(self, stringValues, expected):
+    @dataProvider(dataProvider_insertAfter)
+    def test_insertAfter(self, stringValues, expected):
         # Given
         ll = LinkedList()
 
         # When
         for i in xrange(0, len(stringValues)):
-            ll.insert(stringValues[i]);
+            ll.insertAfter(stringValues[i]);
 
         result = ll.toString(',');
         # Then
-        self.assertEqual('1,2,3,4,5,6,8,8,8,9', result);
+        self.assertEqual('8,3,8,6,1,4,5,9,2,8', result);
 
-    @dataProvider(dataProvider_insert)
-    def test_getItem(self, stringValues, expected):
+    def dataProvider_insertOrdered(self):
+        return [
+            [ # data set 1
+                [8,3,8,6,1,4,5,9,2,8], None
+            ],
+        ]
+
+    @dataProvider(dataProvider_insertOrdered)
+    def test_insertSorted(self, stringValues, expected):
         # Given
         ll = LinkedList()
 
         # When
         for i in xrange(0, len(stringValues)):
-            item = ll.getItem(stringValues[i]);
-            ll.insertAtHead(stringValues[i]);
-
+            ll.insertSorted(stringValues[i]);
 
         result = ll.toString(',');
         # Then
         self.assertEqual('1,2,3,4,5,6,8,8,8,9', result);
+
+        self.assertEqual(True, ll.hasItem(1));
+        self.assertEqual(True, ll.hasItem(2));
+        self.assertEqual(True, ll.hasItem(3));
+        self.assertEqual(True, ll.hasItem(4));
+        self.assertEqual(True, ll.hasItem(5));
+        self.assertEqual(True, ll.hasItem(6));
+        self.assertEqual(False, ll.hasItem(7));
+        self.assertEqual(True, ll.hasItem(8));
+        self.assertEqual(True, ll.hasItem(9));
+
+    # @dataProvider(dataProvider_insert)
+    # def test_getItem(self, stringValues, expected):
+    #     # Given
+    #     ll = LinkedList()
+
+    #     # When
+    #     for i in xrange(0, len(stringValues)):
+    #         item = ll.getItem(stringValues[i]);
+    #         ll.insertAtHead(stringValues[i]);
+
+
+    #     result = ll.toString(',');
+    #     # Then
+    #     self.assertEqual('1,2,3,4,5,6,8,8,8,9', result);
+
+
 
     # @dataProvider(dataProvider_insert)
     # def test_insert(self, stringValues, expected):

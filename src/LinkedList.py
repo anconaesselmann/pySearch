@@ -3,59 +3,69 @@
 """
 class LinkedList():
     def __init__(self):
-        self.next         = None;
         self._currentNode = None;
-        self._temp        = None;
+        self._head        = None;
 
     def __str__(self):
         return self.toString(',');
 
-    def _insert(self,old, new):
-        temp     = old.next;
-        old.next = new;
-        new.next = temp;
+    def reset(self):
+        self._currentNode = self._head;
 
-    def insert(self, value):
+    def insertAfter(self, value):
         newNode = LinkedList.Node(value);
-        if not self.next or value < self.next.value:
-            self._insert(self, newNode);
+        if self._head is None:
+            self._head = newNode;
+            self._currentNode = self._head;
+            return;
         else:
-            currentNode = self.next;
-            while currentNode.next is not None and value > currentNode.next.value:
-                currentNode = currentNode.next;
-            self._insert(currentNode, newNode);
+            newNode.next = self._currentNode.next
+            self._currentNode.next = newNode;
+            self._currentNode = newNode;
+            return;
 
-    def insertAtHead(self, value):
-        newNode = LinkedList.Node(value);
-        if self._currentNode is None:
-            newNode.next = self.next;
-            self.next    = newNode;
-        else: self._insert(self._currentNode, newNode);
-
-    def getItem(self, value):
-        if self.next == None:
-            self._currentNode = None;
-            return None;
-        currentNode = prevNode = self.next
-        if currentNode.value > value:
-            self._currentNode = None;
-        elif currentNode.next is None:
-            self._currentNode = self.next;
+    def insertSorted(self, value):
+        if self._head is None: self.insertAfter(value);
         else:
-            while currentNode is not None and value >= currentNode.value:
-                prevNode    = currentNode;
-                currentNode = currentNode.next;
-            if value == prevNode.value:
-                self._currentNode = prevNode;
-                return self._currentNode.value;
+            newNode = LinkedList.Node(value);
+            if self._head.value > value:
+                newNode.next = self._head;
+                self._head = newNode;
             else:
-                self._currentNode = prevNode;
-        return None;
+                current = self._head;
+                while current is not None:
+                    next = current.next;
+                    if next is None: break;
+                    if value < next.value: break
+                    current = current.next;
+                newNode.next = current.next
+                current.next = newNode;
+                current = newNode;
+
+    def hasItem(self, value):
+        current = self._head;
+        while current is not None:
+            if current.value == value: return True;
+            current = current.next;
+        return False;
+
+    def getLastItemOf(self, value):
+        current = self._head;
+        while current is not None:
+            if current.value == value:
+                if current.next is not None:
+                    next = current.next.value;
+                    while next is not None and next == value:
+                        current = next;
+                        next = current.next;
+                return current.value;
+            current = current.next;
+        return None
 
     def toString(self, seperator):
         out = '';
-        currentNode = self.next;
         hasOutput = False;
+        currentNode = self._head;
         while currentNode is not None:
             if not hasOutput:
                 out += str(currentNode.value);
