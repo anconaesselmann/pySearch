@@ -45,8 +45,8 @@ class Inverter():
             self._fileSorter.sort(self._inputDirs[i]);
         self._fileMerger.merge(self._inputDirs, self._mergedFileName);
 
-        mergedFH     = io.open(self._mergedFileName,      'r');
-        collapsedFH  = io.open(self._collapsedFileName,   'a');
+        mergedFH     = io.open(self._inputDirs[0],      'rb');
+        collapsedFH  = io.open(self._collapsedFileName, 'wb');
 
         line         = mergedFH.readline();
         index        = IndexList();
@@ -61,17 +61,20 @@ class Inverter():
             termName      = term.term;
             termFrequency = term.count;
             termString    = termName + ':' + str(termFrequency)
+            term.reset();
             for doc in term:
                 docId             = str(self._generateDocId(doc.doc));
                 documentFrequency = doc.count;
                 docString         =  '|' + docId + ':' + str(documentFrequency) + ';';
                 lineString = '';
+                doc.reset();
                 for line in doc:
                     if len(lineString) > 0: lineString += ',';
                     lineString += str(line.line);
                 docString  += lineString;
                 termString += docString;
             collapsedFH.write(termString + '\n');
+            # print termString
         collapsedFH.close();
 
     def getCollapsedOutputFileDir(self):

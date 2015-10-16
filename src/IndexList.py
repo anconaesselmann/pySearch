@@ -12,6 +12,7 @@ class IndexList():
         return self.objs.toString('\n');
     def reset(self):
         self.objs.reset();
+        self._iterator = None;
     def insert(self, string1, string2, string3):
         obj = IndexList.Term(string1);
         current = self.objs.getLastItemOf(obj);
@@ -46,7 +47,9 @@ class IndexList():
             return self.term <  other.term;
         def __eq__(self, other):
             return self.term  == other.term;
-
+        def reset(self):
+            self.docs.reset();
+            self._iterator = None;
         def insertDoc(self, doc, line):
             obj = IndexList.Doc(doc);
             current = self.docs.getLastItemOf(obj);
@@ -84,6 +87,9 @@ class IndexList():
             self.doc   = doc;
             self.lines = LinkedList();
             self.count = 1;
+            self._iterator = None;
+        def reset(self):
+            self.lines.reset();
             self._iterator = None;
         def __str__(self):
             return '\n\t' + self.doc + ', count:' + str(self.count) + self.lines.toString(',');

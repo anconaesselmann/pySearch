@@ -49,3 +49,14 @@ srcTest/SearchEngineTestData
 srcTest/IndexerTestData
 srcTest/FileBlockTestData/
 srcTest/ParserTestData
+
+srcTest/IndexerTestData/index/dictionary.txt
+srcTest/IndexerTestData/index/indexTable.txt
+srcTest/IndexerTestData/invTemp/inverter_1_collapsed.txt
+srcTest/IndexerTestData/invTemp/inverter_1_documentIds.txt
+srcTest/IndexerTestData/invTemp/inverter_1_merged.txt
+srcTest/IndexerTestData/temp/1.txt
+srcTest/InverterTestData/inverter_1_collapsed.txt
+srcTest/InverterTestData/inverter_1_documentIds.txt
+srcTest/SearchEngineTestData/index/dictionary.txt
+srcTest/SearchEngineTestData/index/indexTable.txt

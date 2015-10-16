@@ -36,11 +36,12 @@ class Parser():
                         continue;
                 partitionId = self._partitionTable.getPartitionId(token);
                 if self._stemmer is not None: token = self._stemmer.stem(token);
-                termDocPositionString = token + self._separationChar + documentName + self._separationChar + str(tokenPosition) + '\n';
+                termDocPositionString = token + self._separationChar + documentName + self._separationChar +  str(self._tokenizer._tokenPosition) + '\n';
                 self._partitionFileHandlers[partitionId].write(termDocPositionString);
                 token, tokenPosition = self._tokenizer.nextToken();
             document = documentCollection.nextDocument();
             self._nbrDocumentsParsed += 1;
+        self._partitionFileHandlers[partitionId].close();
 
     def getOutputFileNames(self):
         return self._outputFileNames;

@@ -38,7 +38,7 @@ class SearchEngineTest(unittest.TestCase):
         wsList     = AlphanumericWhiteSpaceList();
         normalizer = LowerCaseNormalizer();
         tokenizer  = Tokenizer(wsList, normalizer);
-        outputDir  = path.dirname(path.realpath(__file__)) + path.sep + 'SearchEngineTestData' + path.sep;
+        outputDir  = path.dirname(path.realpath(__file__)) + path.sep + 'SearchEngineTestData' + path.sep + 'invTemp' + path.sep;
         partitions = [];
         partTable  = PartitionTable(partitions);
         stopWords  = StopWordList();
@@ -50,27 +50,11 @@ class SearchEngineTest(unittest.TestCase):
         outputDir  = path.dirname(path.realpath(__file__)) + path.sep + 'SearchEngineTestData' + path.sep + 'invTemp' + path.sep;
         stemmer    = StemmingWrapper();
         sortAlgym  = QuickSort();
-        fileSorter = FileSorter(sortAlgym, 1000 , False);
+        fileSorter = FileSorter(sortAlgym, 1000000 , False);
         fileMerger = FileMerger();
         inverter   = Inverter(outputDir, stemmer, fileSorter, fileMerger);
         return inverter;
-
-    def _create_index(self):
-        parser     = self._getParser();
-        inputDirs  = [];
-        inverter   = self._getInverter();
-        indexFileBlock = FileBlock(
-            self.blockSize,
-            self.bufferSize,
-            self.blockFilesDir,
-            self.tableFileName,
-        );
-        indexer    = Indexer(parser, inverter, indexFileBlock, self.dictionaryFile);
-        docCollect = VirtualDocumentCollection(self.docCollFileName);
-        indexer.index(docCollect);
-
-    def test_reloadDictionary(self):
-        self._create_index();
+    def _getFile(self):
         indexFileBlock = FileBlock(
             self.blockSize,
             self.bufferSize,
@@ -78,6 +62,19 @@ class SearchEngineTest(unittest.TestCase):
             self.tableFileName,
         );
         indexFileBlock.loadRegistry();
+        return indexFileBlock;
+    def _create_index(self):
+        parser     = self._getParser();
+        inputDirs  = [];
+        inverter   = self._getInverter();
+        indexFileBlock = self._getFile();
+        indexer    = Indexer(parser, inverter, indexFileBlock, self.dictionaryFile);
+        docCollect = VirtualDocumentCollection(self.docCollFileName);
+        indexer.index(docCollect);
+
+    def test_reloadDictionary(self):
+        self._create_index();
+        indexFileBlock = self._getFile();
 
         stemmer    = StemmingWrapper();
         stopWords  = StopWordList();

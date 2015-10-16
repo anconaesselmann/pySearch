@@ -17,14 +17,14 @@ class IndexListTest(unittest.TestCase):
         index.insert('wordA', 'doc5', '22');
         index.insert('wordA', 'doc5', '99');
 
-        index.insert('wordA', 'doc9', '1');
+        index.insert('bordA', 'doc9', '1');
         index.insert('wordA', 'doc5', '199');
         index.insert('wordA', 'doc7', '4');
-        index.insert('wordA', 'doc7', '88');
+        index.insert('aordA', 'doc7', '88');
         index.insert('wordA', 'doc7', '99');
-        index.insert('wordB', 'doc4', '9');
-        index.insert('wordD', 'doc7', '23');
-        index.insert('wordC', 'doc8', '83');
+        index.insert('gordB', 'doc4', '9');
+        index.insert('gordD', 'doc7', '23');
+        index.insert('gordC', 'doc8', '83');
         index.insert('wordD', 'doc1', '2');
         index.insert('wordD', 'doc7', '11');
 

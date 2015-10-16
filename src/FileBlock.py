@@ -179,7 +179,7 @@ class FileBlock():
                 self._openFileId += 1;
                 self._readHead = 0;
             else: self._eof = True;
-            self._currentBlockFH = io.open(self._blocksDir + str(self._openFileId) + self._extension, 'r');
+            self._currentBlockFH = io.open(self._blocksDir + str(self._openFileId) + self._extension, 'rb');
             FileBlock.BlockRecordHandle.s_openFileId     = self._openFileId;
             FileBlock.BlockRecordHandle.s_openFileHandle = self._currentBlockFH;
 

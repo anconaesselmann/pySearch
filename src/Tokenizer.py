@@ -13,9 +13,11 @@ class Tokenizer():
         self._normalizer     = normalizer;
         self._document       = None;
         self._tokenDocumentPosition = None;
+        self._tokenPosition = -1;
 
     def loadDocument(self, document):
         self._document = document;
+        self._tokenPosition = -1;
 
     """
     Returns the next token from a Document or None when no more tokens are available.
@@ -23,6 +25,7 @@ class Tokenizer():
     def nextToken(self):
         self._skipWhitespace();
         if self._document.isEOF(): return None, None;
+        self._tokenPosition += 1;
         char  = self._document.getChar();
         token = '';
         self._tokenDocumentPosition = self._document.tell();
