@@ -22,6 +22,7 @@ from src.StopWordList import StopWordList;
 from src.Tokenizer import Tokenizer;
 from src.VirtualDocumentCollection import VirtualDocumentCollection;
 from src.FileBlock import FileBlock;
+from src.QueryTokenizer import QueryTokenizer;
 
 class SearchEngineTest(unittest.TestCase):
     blockSize       = 10000;
@@ -96,7 +97,7 @@ class SearchEngineTest(unittest.TestCase):
         # # self.assertEqual(result, []);
         # print result;
         print "search result for '1(great tablet) 2(tablet fast)': "
-        result = se.search("1(great tablet) temp bla 2(tablet fast) fu");
+        result = se.search("1(great tablet) 2(tablet fast) google");
         # self.assertEqual(result, []);
         print result;
         # print "search result for 'tablet': "

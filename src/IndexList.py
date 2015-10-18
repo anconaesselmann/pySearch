@@ -88,11 +88,12 @@ class IndexList():
             self.lines = LinkedList();
             self.count = 1;
             self._iterator = None;
+            self.documentFrequency = None;
         def reset(self):
             self.lines.reset();
             self._iterator = None;
         def __str__(self):
-            return '\n\t' + self.doc + ', count:' + str(self.count) + self.lines.toString(',');
+            return '\n\t' + str(self.doc) + ', count:' + str(self.count) + self.lines.toString(',');
         def __lt__(self, other):
             return self.doc < other.doc;
         def __eq__(self, other):
