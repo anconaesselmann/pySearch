@@ -22,6 +22,7 @@ class IndexList():
             self.objs.insertSorted(obj);
             current = obj;
         current.insertDoc(string2, string3);
+        return current;
 
     def __iter__(self):
         return self;

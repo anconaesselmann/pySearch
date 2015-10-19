@@ -5,9 +5,10 @@ class LinkedList():
     def __init__(self):
         self._currentNode = None;
         self._head        = None;
+        self.printSep = ',';
 
     def __str__(self):
-        return self.toString(',');
+        return self.toString(self.printSep);
 
     def reset(self):
         self._currentNode = self._head;

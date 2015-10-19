@@ -84,44 +84,27 @@ class SearchEngineTest(unittest.TestCase):
         se = SearchEngine(self.dictionaryDir, indexFileBlock, stemmer, stopWords, self.docIds, queryTokenizer);
 
 
-        # print "search result for 'nexus like love happy': "
-        # result = se.search("nexus like love happy");
-        # # self.assertEqual(result, []);
-        # print result;
-        # print "search result for 'asus repair': "
-        # result = se.search("asus repair");
-        # # self.assertEqual(result, []);
-        # print result;
-        # print "search result for '0(touch screen) fix repair': "
-        # result = se.search("0(touch screen) fix repair");
-        # # self.assertEqual(result, []);
-        # print result;
-        print "search result for '1(great tablet) 2(tablet fast)': "
-        result = se.search("1(great tablet) 2(tablet fast) google");
+        print "search result for 'nexus like love happy': "
+        result = se.search("nexus like love happy");
         # self.assertEqual(result, []);
         print result;
-        # print "search result for 'tablet': "
-        # result = se.search("tablet");
-        # # self.assertEqual(result, []);
-        # print result;
+        print "\nsearch result for 'asus repair': "
+        result = se.search("asus repair");
+        # self.assertEqual(result, []);
+        print result;
+        print "\nsearch result for '0(touch screen) fix repair': "
+        result = se.search("0(touch screen) fix repair");
+        # self.assertEqual(result, []);
+        print result;
+        print "\nsearch result for '1(great tablet) 2(tablet fast)': "
+        result = se.search("1(great tablet) 2(tablet fast)");
+        # self.assertEqual(result, []);
+        print result;
+        print "\nsearch result for 'tablet': "
+        result = se.search("tablet");
+        # self.assertEqual(result, []);
+        print result;
 
-
-
-
-        # print "\nsearch result for 'asus AND google': "
-        # result = se.search("asus AND google");
-        # self.assertEqual(result, [1,8]);
-        # print result;
-
-        # print "search result for 'screen AND bad': "
-        # result = se.search("screen AND bad");
-        # self.assertEqual(result, [3]);
-        # print result;
-
-        # print "search result for 'great AND tablet': "
-        # result = se.search("great AND tablet");
-        # self.assertEqual(result, [2,3,6]);
-        # print result;
 
 
 if __name__ == '__main__':

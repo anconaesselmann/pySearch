@@ -24,6 +24,7 @@ class Parser():
             self._partitionFileHandlers[i] = io.open(fileName, 'wb');
 
     def parse(self, documentCollection):
+        docTokenCountFH = io.open(self._outputDir + "inverter_1_docTokenCount_temp.txt", 'wb');
         document = documentCollection.nextDocument();
         while document is not None:
             documentName = document.getName();
@@ -41,6 +42,8 @@ class Parser():
                 token, tokenPosition = self._tokenizer.nextToken();
             document = documentCollection.nextDocument();
             self._nbrDocumentsParsed += 1;
+            docTokenCountLine = documentName + "," + str(self._tokenizer._tokenPosition) + "\n";
+            docTokenCountFH.write(docTokenCountLine);
         self._partitionFileHandlers[partitionId].close();
 
     def getOutputFileNames(self):

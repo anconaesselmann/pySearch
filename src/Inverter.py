@@ -14,6 +14,9 @@ class Inverter():
         self._mergedFileName      = outputDir + inverterId + '_merged'      + self._indexExtension;
         self._collapsedFileName   = outputDir + inverterId + '_collapsed'   + self._indexExtension;
         self._documentIdsFileName = outputDir + inverterId + '_documentIds' + self._indexExtension;
+        self._documentTokenCountsTempFileName = outputDir + inverterId + '_docTokenCount_temp' + self._indexExtension;
+        self._documentTokenCountsFileName = outputDir + inverterId + '_docTokenCount' + self._indexExtension;
+        self._documentTotalDocCount = outputDir + inverterId + '_docTotalDocCount' + self._indexExtension;
         self._fileSorter          = fileSorter;
         self._fileMerger          = fileMerger;
         self._documentIds         = {};
@@ -39,7 +42,21 @@ class Inverter():
             result = self._docIdCounter - 1;
         return result;
 
+    # document tokens have been stored with document names. The names have to be converted to ids.
+    def _convertDocumentTokenCounts(self):
+        docTokenCount_tempFH = io.open(self._documentTokenCountsTempFileName, 'rb');
+        docTokenCountFH = io.open(self._documentTokenCountsFileName, 'wb');
+        while True:
+            line = docTokenCount_tempFH.readline()
+            lineParts = line.rstrip().split(",")
+            if not line: break
+            newLine = str(self._generateDocId(lineParts[0])) + "," + lineParts[1] + "\n";
+            docTokenCountFH.write(newLine);
+        docTokenCount_tempFH.close();
+        docTokenCountFH.close();
+
     def create(self, inputDirs):
+        self._convertDocumentTokenCounts();
         self._inputDirs = inputDirs;
         for i in xrange(0, len(self._inputDirs)):
             self._fileSorter.sort(self._inputDirs[i]);
@@ -53,8 +70,11 @@ class Inverter():
         prevTerm     = None;
         while line:
             parts = line.split(',');
-            index.insert(parts[0], parts[1], int(parts[2]));
+            lastInserted = index.insert(parts[0], parts[1], int(parts[2]));
             line  = mergedFH.readline();
+            if prevTerm == parts[1]:
+                lastInserted.count += -1;
+            prevTerm = parts[1];
         index.reset();
         count = 0;
         for term in index:
@@ -75,6 +95,9 @@ class Inverter():
                 termString += docString;
             collapsedFH.write(termString + '\n');
             # print termString
+        docTokenCountFH = io.open(self._documentTotalDocCount, 'wb');
+        docTokenCountFH.write(str(self._docIdCounter));
+        docTokenCountFH.close();
         collapsedFH.close();
 
     def getCollapsedOutputFileDir(self):

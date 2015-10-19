@@ -1,6 +1,30 @@
-search result for 'asus AND google':
-[1, 8]
-search result for 'screen AND bad':
-[3]
-search result for 'great AND tablet':
-[2, 3, 6]
+search result for 'nexus like love happy':
+Document id: 2, tf.idf: -1.69798499577
+Document id: 8, tf.idf: -1.65451570322
+Document id: 1, tf.idf: -1.08904420112
+Document id: 6, tf.idf: -0.984413577746
+Document id: 4, tf.idf: -0.713780688799
+
+search result for 'asus repair':
+Document id: 8, tf.idf: -1.07425656374
+Document id: 3, tf.idf: -0.87868439851
+Document id: 9, tf.idf: -0.214856731161
+Document id: 1, tf.idf: -0.164248536927
+Document id: 4, tf.idf: -0.159766440985
+Document id: 10, tf.idf: -0.115031669221
+
+search result for '0(touch screen) fix repair':
+Document id: 8, tf.idf: -2.94604080665
+Document id: 3, tf.idf: -1.95472284588
+
+search result for '1(great tablet) 2(tablet fast)':
+Document id: 2, tf.idf: -1.07215794582
+Document id: 10, tf.idf: -0.271119918294
+
+search result for 'tablet':
+Document id: 2, tf.idf: -0.258310225168
+Document id: 9, tf.idf: -0.214856731161
+Document id: 3, tf.idf: -0.21169750755
+Document id: 6, tf.idf: -0.207317312927
+Document id: 4, tf.idf: -0.159766440985
+Document id: 10, tf.idf: -0.115031669221
