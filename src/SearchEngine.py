@@ -86,10 +86,21 @@ class SearchEngine():
             currentNode = currentNode.next;
 
         # perform search with appended query
-        self._currentQueryId += 1;
 
         results = self.tfidf(query);
+        current = results._head;
+        rank    = 0;
 
+        print("Complete query:");
+        print(query)
+        print("results:\n")
+
+        while current is not None:
+            print str(self._currentQueryId) + " " + str(current.value.docId) + " " + str(rank) + " " + str(current.value.tfidf);
+            current = current.next;
+            rank += 1;
+
+        self._currentQueryId += 1;
 
 
     def tfidf_term(self, query, docId):

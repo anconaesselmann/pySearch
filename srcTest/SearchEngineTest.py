@@ -94,9 +94,9 @@ class SearchEngineTest(unittest.TestCase):
         print "search result for 'nexus like love happy': "
         result = se.search("nexus like love happy", queryExpansionParameter);
         # self.assertEqual(result, []);
-        print result;
-        # print "\nsearch result for 'asus repair': "
-        # result = se.search("asus repair");
+        # print result;
+        print "\nsearch result for 'asus repair': "
+        result = se.search("asus repair", queryExpansionParameter);
         # # self.assertEqual(result, []);
         # print result;
         # print "\nsearch result for '0(touch screen) fix repair': "
