@@ -43,11 +43,45 @@ class SearchEngine():
         self.termFrequencies = None;
         self._documentCount = 0;
         self._loadDocumentTermFrequencies();
+        self._docCollect   = None;
+        self._tokenizer    = None;
 
     """
     returns an array of documents that the two query terms are both in
     """
-    def search(self, query):
+    def search(self, query, queryExpansionParameter):
+        orderedQueryResults                      = self.tfidf(query);
+        mostRelevantDocumentId                   = orderedQueryResults.getHead().docId;
+        mostRelevantDocumentIdDocumentCollection = int(self._documentIds[mostRelevantDocumentId]);
+
+        uniqueTerms  = {};
+        currentDoc   = self._docCollect.nextDocument();
+        currentDocId = int(currentDoc.getName());
+        while currentDocId != mostRelevantDocumentIdDocumentCollection:
+            currentDoc   = self._docCollect.nextDocument();
+            currentDocId = int(currentDoc.getName());
+
+        # current doc now has the document that is the highest ranked tfid result
+        self._tokenizer.loadDocument(currentDoc);
+
+        token, position = self._tokenizer.nextToken()
+        while token is not None:
+            uniqueTerms[token] = position;
+            token, position = self._tokenizer.nextToken();
+
+        for token, pos in uniqueTerms.iteritems():
+            print token;
+
+        return orderedQueryResults;
+
+    def setDocCollect(self, docCollect):
+        docCollect.reset();
+        self._docCollect = docCollect;
+
+    def setTokenizer(self, tokenizer):
+        self._tokenizer = tokenizer;
+
+    def tfidf(self, query):
         queryTokens  = self._queryTokenizer.tokenize(query);
         postingLists = self._getPostingLists(queryTokens);
         documentScores = {};

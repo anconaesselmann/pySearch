@@ -34,11 +34,14 @@ class SearchEngineTest(unittest.TestCase):
     docIds          = path.dirname(path.realpath(__file__)) + path.sep + 'SearchEngineTestData' + path.sep + 'invTemp' + path.sep + 'inverter_1_documentIds.txt';
     docCollFileName = path.dirname(path.realpath(__file__)) + path.sep + 'SearchEngineTestData' + path.sep + 'documents.txt';
 
-
-    def _getParser(self):
+    def _getTokenizer(self):
         wsList     = AlphanumericWhiteSpaceList();
         normalizer = LowerCaseNormalizer();
         tokenizer  = Tokenizer(wsList, normalizer);
+        return tokenizer;
+
+    def _getParser(self):
+        tokenizer  = self._getTokenizer();
         outputDir  = path.dirname(path.realpath(__file__)) + path.sep + 'SearchEngineTestData' + path.sep + 'invTemp' + path.sep;
         partitions = [];
         partTable  = PartitionTable(partitions);
@@ -72,38 +75,42 @@ class SearchEngineTest(unittest.TestCase):
         indexer    = Indexer(parser, inverter, indexFileBlock, self.dictionaryFile);
         docCollect = VirtualDocumentCollection(self.docCollFileName);
         indexer.index(docCollect);
+        return docCollect;
 
     def test_reloadDictionary(self):
-        self._create_index();
+        docCollect     = self._create_index();
         indexFileBlock = self._getFile();
+        tokenizer      = self._getTokenizer();
 
         stemmer    = StemmingWrapper();
         stopWords  = StopWordList();
         queryTokenizer = QueryTokenizer();
+        queryExpansionParameter = 1;
 
         se = SearchEngine(self.dictionaryDir, indexFileBlock, stemmer, stopWords, self.docIds, queryTokenizer);
-
+        se.setDocCollect(docCollect);
+        se.setTokenizer(tokenizer);
 
         print "search result for 'nexus like love happy': "
-        result = se.search("nexus like love happy");
+        result = se.search("nexus like love happy", queryExpansionParameter);
         # self.assertEqual(result, []);
         print result;
-        print "\nsearch result for 'asus repair': "
-        result = se.search("asus repair");
-        # self.assertEqual(result, []);
-        print result;
-        print "\nsearch result for '0(touch screen) fix repair': "
-        result = se.search("0(touch screen) fix repair");
-        # self.assertEqual(result, []);
-        print result;
-        print "\nsearch result for '1(great tablet) 2(tablet fast)': "
-        result = se.search("1(great tablet) 2(tablet fast)");
-        # self.assertEqual(result, []);
-        print result;
-        print "\nsearch result for 'tablet': "
-        result = se.search("tablet");
-        # self.assertEqual(result, []);
-        print result;
+        # print "\nsearch result for 'asus repair': "
+        # result = se.search("asus repair");
+        # # self.assertEqual(result, []);
+        # print result;
+        # print "\nsearch result for '0(touch screen) fix repair': "
+        # result = se.search("0(touch screen) fix repair");
+        # # self.assertEqual(result, []);
+        # print result;
+        # print "\nsearch result for '1(great tablet) 2(tablet fast)': "
+        # result = se.search("1(great tablet) 2(tablet fast)");
+        # # self.assertEqual(result, []);
+        # print result;
+        # print "\nsearch result for 'tablet': "
+        # result = se.search("tablet");
+        # # self.assertEqual(result, []);
+        # print result;
 
 
 

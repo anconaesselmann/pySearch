@@ -25,6 +25,10 @@ class LinkedList():
             self._currentNode = newNode;
             return;
 
+    def getHead(self):
+        if self._head is None: return None;
+        return self._head.value;
+
     def insertSorted(self, value):
         if self._head is None: self.insertAfter(value);
         else:

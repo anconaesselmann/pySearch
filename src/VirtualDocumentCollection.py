@@ -11,9 +11,14 @@ class VirtualDocumentCollection():
     _documents      = None;
     _currentDocName = None;
     _hasMoreDocuments = True;
+    _fileName         = None;
 
     def __init__(self, fileName):
-        self._documents = io.open(fileName, 'r');
+        self._fileName  = fileName;
+        self.reset();
+
+    def reset(self):
+        self._documents = io.open(self._fileName, 'r');
 
     def _getNextDocName(self):
         char = None;
