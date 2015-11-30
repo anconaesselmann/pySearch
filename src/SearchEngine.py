@@ -45,6 +45,7 @@ class SearchEngine():
         self._loadDocumentTermFrequencies();
         self._docCollect   = None;
         self._tokenizer    = None;
+        self._currentQueryId = 0;
 
     """
     returns an array of documents that the two query terms are both in
@@ -53,6 +54,8 @@ class SearchEngine():
         orderedQueryResults                      = self.tfidf(query);
         mostRelevantDocumentId                   = orderedQueryResults.getHead().docId;
         mostRelevantDocumentIdDocumentCollection = int(self._documentIds[mostRelevantDocumentId]);
+        orderedExpansionTerms                    = LinkedList();
+        orderedExpansionTerms.printSep           = "\n";
 
         uniqueTerms  = {};
         currentDoc   = self._docCollect.nextDocument();
@@ -64,15 +67,43 @@ class SearchEngine():
         # current doc now has the document that is the highest ranked tfid result
         self._tokenizer.loadDocument(currentDoc);
 
+        # generate unique query term set
         token, position = self._tokenizer.nextToken()
         while token is not None:
             uniqueTerms[token] = position;
             token, position = self._tokenizer.nextToken();
 
+        # calculate tfidf scores for each token and insert into ordered linked list
         for token, pos in uniqueTerms.iteritems():
-            print token;
+            tfidf = self.tfidf_term(token, mostRelevantDocumentIdDocumentCollection);
+            orderedExpansionTerms.insertSorted(QueryResultItem(token, tfidf));
 
-        return orderedQueryResults;
+        # expand query with most relevant query terms:
+        currentNode = orderedExpansionTerms._head;
+        for i in xrange(0,queryExpansionParameter):
+            currentData = currentNode.value.docId;
+            query += " " + currentData;
+            currentNode = currentNode.next;
+
+        # perform search with appended query
+        self._currentQueryId += 1;
+
+        results = self.tfidf(query);
+
+
+
+    def tfidf_term(self, query, docId):
+        queryTokens  = self._queryTokenizer.tokenize(query);
+        postingLists = self._getPostingLists(queryTokens);
+        documentScores = {};
+        for term in postingLists:
+            if term is None: continue
+            for doc in term:
+                if str(doc.doc) != str(docId): continue;
+                termFrequency = 1 + math.log10(float(doc.count) / float(self.termFrequencies[int(doc.doc) - 1]))
+                docSocre = termFrequency * self._getIDF(term);
+                return docSocre;
+        return 0;
 
     def setDocCollect(self, docCollect):
         docCollect.reset();
@@ -101,6 +132,7 @@ class SearchEngine():
 
 
     def _getIDF(self, term):
+        if float(term.count) == 0: return 0;
         return math.log10(float(self._documentCount) / float(term.count));
 
     def _reloadDictionary(self, dictionaryDir):

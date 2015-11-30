@@ -85,7 +85,7 @@ class SearchEngineTest(unittest.TestCase):
         stemmer    = StemmingWrapper();
         stopWords  = StopWordList();
         queryTokenizer = QueryTokenizer();
-        queryExpansionParameter = 1;
+        queryExpansionParameter = 5;
 
         se = SearchEngine(self.dictionaryDir, indexFileBlock, stemmer, stopWords, self.docIds, queryTokenizer);
         se.setDocCollect(docCollect);
