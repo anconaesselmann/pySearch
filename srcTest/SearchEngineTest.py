@@ -85,32 +85,18 @@ class SearchEngineTest(unittest.TestCase):
         stemmer    = StemmingWrapper();
         stopWords  = StopWordList();
         queryTokenizer = QueryTokenizer();
-        queryExpansionParameter = 5;
 
-        se = SearchEngine(self.dictionaryDir, indexFileBlock, stemmer, stopWords, self.docIds, queryTokenizer);
-        se.setDocCollect(docCollect);
-        se.setTokenizer(tokenizer);
+        for i in xrange(1,6):
+            se = SearchEngine(self.dictionaryDir, indexFileBlock, stemmer, stopWords, self.docIds, queryTokenizer);
+            se.setDocCollect(docCollect);
+            se.setTokenizer(tokenizer);
+            queryExpansionParameter = i;
+            se.search("battery", queryExpansionParameter);
+            se.search("screen", queryExpansionParameter);
+            se.search("speed", queryExpansionParameter);
 
-        print "search result for 'nexus like love happy': "
-        result = se.search("nexus like love happy", queryExpansionParameter);
-        # self.assertEqual(result, []);
-        # print result;
-        print "\nsearch result for 'asus repair': "
-        result = se.search("asus repair", queryExpansionParameter);
-        # # self.assertEqual(result, []);
-        # print result;
-        # print "\nsearch result for '0(touch screen) fix repair': "
-        # result = se.search("0(touch screen) fix repair");
-        # # self.assertEqual(result, []);
-        # print result;
-        # print "\nsearch result for '1(great tablet) 2(tablet fast)': "
-        # result = se.search("1(great tablet) 2(tablet fast)");
-        # # self.assertEqual(result, []);
-        # print result;
-        # print "\nsearch result for 'tablet': "
-        # result = se.search("tablet");
-        # # self.assertEqual(result, []);
-        # print result;
+
+
 
 
 

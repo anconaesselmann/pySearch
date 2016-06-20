@@ -45,13 +45,14 @@ class SearchEngine():
         self._loadDocumentTermFrequencies();
         self._docCollect   = None;
         self._tokenizer    = None;
-        self._currentQueryId = 0;
+        self._currentQueryId = 1;
 
     """
     returns an array of documents that the two query terms are both in
     """
     def search(self, query, queryExpansionParameter):
         orderedQueryResults                      = self.tfidf(query);
+        if orderedQueryResults is None: return None;
         mostRelevantDocumentId                   = orderedQueryResults.getHead().docId;
         mostRelevantDocumentIdDocumentCollection = int(self._documentIds[mostRelevantDocumentId]);
         orderedExpansionTerms                    = LinkedList();
@@ -91,12 +92,12 @@ class SearchEngine():
         current = results._head;
         rank    = 0;
 
-        print("Complete query:");
+        print("\n\nComplete query:");
         print(query)
         print("results:\n")
 
         while current is not None:
-            print str(self._currentQueryId) + " " + str(current.value.docId) + " " + str(rank) + " " + str(current.value.tfidf);
+            print str(self._currentQueryId) + " 0 " + str(current.value.docId) + " " + str(rank) + " " + str(current.value.tfidf) + " 0";
             current = current.next;
             rank += 1;
 
@@ -129,6 +130,7 @@ class SearchEngine():
         documentScores = {};
         # create document scores
         for term in postingLists:
+            if term is None: return;
             for doc in term:
                 termFrequency = 1 + math.log10(float(doc.count) / float(self.termFrequencies[int(doc.doc) - 1]))
                 docSocre = termFrequency * self._getIDF(term);
@@ -180,25 +182,30 @@ class SearchEngine():
     Returns a linked list of documents that have token in it
     """
     def _getQueryTermPostingList(self, token):
-        stemmedToken = self._stemmer.stem(token);
-        if self._stopWordsList.isStopWord(stemmedToken): return None;
-        fileHandler = self._postingList.openRecordHandler(self._dictionary[stemmedToken]);
-        line        = fileHandler.readline();
-        parts       = line.split('|');
-        documentFrequency = parts[0].split(':')[1];
-        term = IndexList.Term(token)
-        term.count = documentFrequency
-        for i in xrange(1, len(parts)):
-            docParts   = parts[i].split(':');
-            docDetails = (docParts[1]).split(';');
-            lines = docDetails[1].split(',');
-            for i in xrange(0, len(lines)):
-                term.insertDoc(self._documentIds[docParts[0]], lines[i]);
-        return term;
+        try:
+            stemmedToken = self._stemmer.stem(token);
+            if self._stopWordsList.isStopWord(stemmedToken): return None;
+            fileHandler = self._postingList.openRecordHandler(self._dictionary[stemmedToken]);
+            line        = fileHandler.readline();
+            parts       = line.split('|');
+            documentFrequency = parts[0].split(':')[1];
+            term = IndexList.Term(token)
+            term.count = documentFrequency
+            for i in xrange(1, len(parts)):
+                docParts   = parts[i].split(':');
+                docDetails = (docParts[1]).split(';');
+                lines = docDetails[1].split(',');
+                for i in xrange(0, len(lines)):
+                    term.insertDoc(self._documentIds[docParts[0]], lines[i]);
+            return term;
+        except Exception, e:
+            print("The term " + token + " is not in the document collection");
+            return None;
+
 
     def _getProximityQueryTermPostingList(self, term1String, term2String, distance):
-        term1   = self._getQueryTermPostingList(term1String);
-        term2   = self._getQueryTermPostingList(term2String);
+        term1    = self._getQueryTermPostingList(term1String);
+        term2    = self._getQueryTermPostingList(term2String);
         docs1    = term1.docs._head;
         docs2    = term2.docs._head;
         newDocs1 = LinkedList();
